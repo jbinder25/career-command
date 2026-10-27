@@ -105,7 +105,7 @@ Magic-link sign-in for your email only, enforced by row-level security in the da
 
 **1. Have Claude do it (recommended).** Nothing to install, nothing runs on your computer.
 
-1. **Make your own private copy:** [**Use this template →**](https://github.com/jbinder25/career-console/generate) (set Visibility to **Private**).
+1. **Make your own private copy:** [**Use this template →**](https://github.com/jbinder25/career-command/generate) (set Visibility to **Private**).
 2. **Connect Claude to your tools:** in claude.ai, Settings, Connectors, connect **GitHub**, **Vercel** and **Supabase** (the rest of [SETUP.md](SETUP.md) Part A has the details).
 3. **Start a session** in [Claude Code on the web](https://claude.ai/code) on your new repository, with those connectors on, and paste this (put your own email in first):
 

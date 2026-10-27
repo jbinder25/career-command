@@ -253,7 +253,7 @@ const SceneB=()=>{const f=useCurrentFrame();const {fps}=useVideoConfig();
  </AbsoluteFill>};
 
 // ---------------- Scene 6: end card ----------------
-const GH='github.com/jbinder25/career-console';
+const GH='github.com/jbinder25/career-command';
 const End=()=>{const f=useCurrentFrame();const {fps}=useVideoConfig();
  const s=spring({frame:f-8,fps,config:{damping:16,stiffness:110}});const s2=spring({frame:f-13,fps,config:{damping:26,stiffness:120}});
  const t2=ip(f,[22,30],[0,1])*(1-ip(f,[104,112],[0,1]));
