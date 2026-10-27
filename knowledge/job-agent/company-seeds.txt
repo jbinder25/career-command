@@ -1,0 +1,541 @@
+# Company names the open scan should try to find job boards for (one per line, # for notes).
+# `node scripts/discover-boards.mjs` resolves each name to a Greenhouse, Ashby or Lever board and writes
+# knowledge/job-agent/open-boards.json. Names already in companies.json (the favorites) are skipped.
+# Add any company you would work for; the next run of the script picks it up.
+# A line starting with ! excludes a company (your own employer, or a name that matched the wrong board).
+!General Assembly Remote Jobs
+!Foundry
+!Ever.green
+
+# --- Companies near you (examples; replace with your own) ---
+Ibotta
+Guild
+Ping Identity
+Sovrn
+Western Union
+Gusto
+Pax8
+Inspirato
+Workiva
+Sling TV
+Gaia
+Healthgrades
+Velocity Global
+SendGrid
+Palantir
+Zayo
+Convoy
+Frontier Airlines
+Vail Resorts
+Trimble
+Rubicon
+Welltok
+Four Winds Interactive
+Craftsy
+ReadyTalk
+Boom Supersonic
+Quantum Metric
+Cologix
+Evolv
+Redpoint Global
+Lightning eMotors
+Clever Real Estate
+Bonfire
+Apptegy
+Foundry
+Ibotta Inc
+Brightflag
+SmartThings
+Spire Global
+Maxar
+Arrow Electronics
+DISH
+Ping
+Pivotal Tracker
+Zeta Global
+Seismic
+Intrado
+Ping Identity
+Rally Software
+Wellbeing
+Aurora Organic
+TTEC
+Liveramp
+Opendoor
+Sundance
+Craft Health
+Evergreen
+Bolder
+Snowflake
+Rocket Lawyer
+Datavant
+Quickbase
+Neustar
+Noodle
+Zuora
+Healthpilot
+Dynatrace
+Domo
+Procore
+Nerdwallet
+Kinaxis
+Pendo
+Calendly
+
+# --- Consumer, marketplaces, travel, events, outdoors, fitness ---
+Airbnb
+Booking
+Vrbo
+Hopper
+Kayak
+Skyscanner
+Sonder
+Vacasa
+Evolve
+Mindbody
+ClassPass
+Eventbrite
+Dice
+Bandsintown
+StubHub
+SeatGeek
+Vivid Seats
+Live Nation
+Songkick
+Tock
+Resy
+OpenTable
+Yelp
+Groupon
+Fever
+Posh
+Poshmark
+Mercari
+ThredUp
+Depop
+Vinted
+Whatnot
+Offerup
+Nextdoor
+Thumbtack
+Porch
+Rover
+Wag
+Care.com
+Bark
+Chewy
+BarkBox
+Zocdoc
+Hims
+Ro
+Noom
+Calm
+Headspace
+Peloton
+Strava
+Whoop
+Oura
+Fitbit
+Garmin
+Tonal
+Mirror
+Hydrow
+Future
+Apple
+Alltrails
+Gaia GPS
+Komoot
+Trailforks
+REI
+Backcountry
+Patagonia
+Yeti
+Hipcamp
+Outdoorsy
+RVshare
+Getaround
+Turo
+Lime
+Bird
+Uber
+Lyft
+Via
+Instacart
+DoorDash
+Grubhub
+Gopuff
+Toast
+Olo
+Square
+Block
+Shopify
+Faire
+Etsy
+eBay
+Wayfair
+Warby Parker
+Allbirds
+Glossier
+Faire Wholesale
+Stitch Fix
+Rent the Runway
+Duolingo
+Coursera
+Udemy
+Masterclass
+Skillshare
+Chegg
+Quizlet
+Brilliant
+Khan Academy
+Nerdy
+Outschool
+Bumble
+Hinge
+Match Group
+Grindr
+Tinder
+Pinterest
+Reddit
+Discord
+Snap
+Twitch
+Medium
+Substack
+Patreon
+Spotify
+SoundCloud
+Audible
+Sonos
+Roku
+Netflix
+Hulu
+Disney
+Warner Bros Discovery
+Paramount
+Fubo
+Vimeo
+Zynga
+Roblox
+Niantic
+Epic Games
+Riot Games
+Unity
+Discord Inc
+
+# --- AI, agents, voice, developer platforms ---
+Anthropic
+OpenAI
+Cohere
+Mistral
+Perplexity
+Character AI
+Scale AI
+Hugging Face
+Weights and Biases
+Anyscale
+Databricks
+Snowflake Inc
+Pinecone
+Weaviate
+LangChain
+LlamaIndex
+Glean
+Writer
+Jasper
+Runway
+Midjourney
+ElevenLabs
+Deepgram
+AssemblyAI
+Speechmatics
+Vapi
+Retell AI
+Bland AI
+Synthflow
+PolyAI
+Parloa
+Sierra
+Decagon
+Intercom
+Ada
+Forethought
+Cresta
+Observe AI
+Uniphore
+Gong
+Clari
+Outreach
+Salesloft
+Hume AI
+Sesame
+Cartesia
+Replit
+Vercel
+Netlify
+Supabase
+Cloudflare
+Fastly
+Twilio
+Sinch
+Bandwidth
+Vonage
+Zoom
+Slack
+Notion
+Linear
+Asana
+Monday
+ClickUp
+Airtable
+Figma
+Canva
+Miro
+Loom
+Calendly Inc
+Zapier
+Retool
+Webflow
+Framer
+Amplitude
+Mixpanel
+Heap
+Segment
+Fullstory
+LaunchDarkly
+Statsig
+Optimizely
+PostHog
+Datadog
+New Relic
+Honeycomb
+Grafana Labs
+PagerDuty
+Sentry
+GitLab
+GitHub
+Postman
+HashiCorp
+Okta
+Auth0
+1Password
+Dropbox
+Box
+Atlassian
+HubSpot
+Zendesk
+Freshworks
+Gorgias
+Klaviyo
+Braze
+Iterable
+Attentive
+Postscript
+Mailchimp
+Sprinklr
+Qualtrics
+Medallia
+SurveyMonkey
+Typeform
+
+# --- Fintech, payments, commerce ---
+Stripe
+Plaid
+Ramp
+Brex
+Mercury
+Chime
+Affirm
+Klarna
+Robinhood
+Coinbase
+Kraken
+Wealthfront
+Betterment
+SoFi
+Upstart
+Marqeta
+Adyen
+Checkout.com
+Bill.com
+Navan
+TripActions
+Expensify
+Gusto Inc
+Rippling
+Deel
+Remote
+Oyster
+Papaya Global
+Justworks
+Lattice
+Culture Amp
+Greenhouse
+Lever
+Ashby
+Carta
+Pilot
+Bench
+Wave
+Melio
+Divvy
+Toast Inc
+Lightspeed
+Bolt
+Fast
+Flexport
+Shippo
+ShipBob
+Samsara
+Motive
+Convoy Inc
+Uber Freight
+Turvo
+project44
+
+# --- Health, wellness, insurtech ---
+Oscar Health
+Devoted Health
+Clover Health
+Included Health
+Teladoc
+Hinge Health
+Sword Health
+Omada Health
+Livongo
+Ginger
+Lyra Health
+Spring Health
+Grow Therapy
+Alma
+Talkspace
+Cerebral
+Brightline
+Maven Clinic
+Carrot Fertility
+Progyny
+Zocdoc Inc
+Doximity
+Ro Health
+Capsule
+Alto
+GoodRx
+Cityblock
+Oak Street Health
+One Medical
+Color
+Tempus
+Flatiron Health
+Veeva
+Lemonade
+Root Insurance
+Hippo
+Policygenius
+Vouch
+Coalition Inc
+At-Bay
+Clearcover
+Next Insurance
+
+# --- Real estate, home, proptech ---
+Zillow
+Redfin
+Compass
+Opendoor Technologies
+Offerpad
+Doma
+Divvy Homes
+Roofstock
+Realtor
+Homeaway
+Latch
+SmartRent
+Procore Technologies
+Houzz
+Thumbtack Inc
+HomeAdvisor
+Frontdoor
+Hippo Insurance
+
+# --- Enterprise software and data ---
+Salesforce
+Workday
+ServiceNow
+Adobe
+Intuit
+Autodesk
+Twilio Inc
+Elastic
+MongoDB
+Confluent
+Fivetran
+dbt Labs
+Hightouch
+Census
+Monte Carlo
+Alteryx
+Tableau
+Looker
+ThoughtSpot
+Sigma Computing
+Mode
+Hex
+Domo Inc
+Qlik
+Splunk
+CrowdStrike
+Cloudflare Inc
+Zscaler
+SentinelOne
+Wiz
+Snyk
+Lacework
+Vanta
+Drata
+Secureframe
+Netskope
+Abnormal Security
+Tanium
+Rubrik
+Cohesity
+Pure Storage
+NetApp
+Nutanix
+Veeam
+DigitalOcean
+Linode
+Akamai
+Squarespace
+Wix
+GoDaddy
+Namecheap
+Yext
+Contentful
+Sanity
+Algolia
+Bloomreach
+Coveo
+Lucidworks
+Highspot
+Showpad
+Seismic Software
+Docusign
+PandaDoc
+Ironclad
+Lucid Software
+Smartsheet
+Wrike
+Workiva Inc
+Anaplan
+Coupa
+Zuora Inc
+Chargebee
+Recurly
+Paddle
+ProfitWell
+Gainsight
+Totango
+Vitally
+ChurnZero
+Mindbody Inc
+Toast POS

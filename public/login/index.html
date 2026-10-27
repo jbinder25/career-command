@@ -1,0 +1,74 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><script src="/shared/theme.js"></script><script src="/shared/config.js"></script><meta name="theme-color" content="#0b1020"><meta name="robots" content="noindex"><title>Sign in · Career Command Center</title><style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#151e31;--line:#33425e;--fg:#f4f7fd;--muted:#b7c2d4;--accent:#83cdff;--btn:#2a65b9;--bad:#ff9b9b}
+body.light{color-scheme:light;--bg:#f6faff;--panel:#fff;--line:#d9e5f3;--fg:#192842;--muted:#54667e;--accent:#3767ae;--btn:#2a65b9;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5;padding:16px}
+.card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px}
+.brand{font-weight:800;font-size:15px;color:var(--muted)}h1{font-size:24px;margin:6px 0 6px;letter-spacing:-.02em}p{margin:0 0 16px;color:var(--muted);font-size:15px}
+label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+input{width:100%;font:inherit;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+button{width:100%;margin-top:12px;font:inherit;font-weight:750;padding:12px;border:0;border-radius:10px;background:var(--btn);color:#fff;cursor:pointer}button:disabled{opacity:.6;cursor:default}
+#status{margin:14px 0 0;min-height:1.5em;font-size:14px}#status.bad{color:var(--bad)}
+input:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+</style></head><body><main class="card">
+<div class="brand" id="brand">Career Command Center</div>
+<h1>Sign in</h1>
+<div id="checking"><p>Checking your session…</p></div>
+<form id="login" hidden><p>Private site. Enter your email and we'll send you a sign-in link.</p><label for="email">Email</label><input type="email" id="email" required autocomplete="email"><button id="send">Send sign-in link</button></form>
+<p id="status" role="status"></p>
+</main><script type="module">
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.0';
+const fromLink=/access_token=|error_description=/.test(location.hash)||new URLSearchParams(location.search).has('code');
+const CONFIG=globalThis.CAREER_CONFIG;
+const supabase=createClient(CONFIG.supabaseUrl,CONFIG.supabaseKey);
+const ALLOWED=CONFIG.ownerEmails.map(e=>e.toLowerCase());
+const $=id=>document.getElementById(id);
+$('brand').textContent=CONFIG.siteName;document.title='Sign in · '+CONFIG.siteName;
+const params=new URLSearchParams(location.search);
+function status(text,bad){$('status').textContent=text||'';$('status').classList.toggle('bad',!!bad)}
+function safeNext(v){return typeof v==='string'&&v.startsWith('/')&&!v.startsWith('//')&&!v.startsWith('/login')?v:'/'}
+function store(k,v){try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}
+function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function setCookie(session){
+ const maxAge=Math.max(0,(session.expires_at||0)-Math.floor(Date.now()/1000));
+ document.cookie='jic_at='+encodeURIComponent(session.access_token)+'; Path=/; Max-Age='+maxAge+'; Secure; SameSite=Lax';
+}
+function clearCookie(){document.cookie='jic_at=; Path=/; Max-Age=0; Secure; SameSite=Lax'}
+function showForm(){$('checking').hidden=true;$('login').hidden=false;$('email').focus()}
+async function finish(session){
+ const email=String(session.user?.email||'').toLowerCase();
+ if(!ALLOWED.includes(email)){await supabase.auth.signOut();clearCookie();status('That account does not have access.',true);showForm();return}
+ // The middleware adds ?reason= when it rejects the cookie. Refresh once, and
+ // stop after repeated bounces instead of looping.
+ const reason=params.get('reason');
+ let bounces=0;
+ try{const b=JSON.parse(sessionStorage.getItem('jic_bounce')||'{}');if(Date.now()-(b.t||0)<20000)bounces=b.n||0}catch(e){}
+ if(reason&&bounces>=2){
+  try{sessionStorage.removeItem('jic_bounce')}catch(e){}
+  status('Signed in as '+email+', but the site check rejected the session ('+reason+'). Send a new link below; if this repeats, share that code.',true);
+  showForm();return;
+ }
+ if(reason||(session.expires_at||0)-Date.now()/1000<60){const {data}=await supabase.auth.refreshSession();if(data?.session)session=data.session}
+ try{sessionStorage.setItem('jic_bounce',JSON.stringify({n:bounces+1,t:Date.now()}))}catch(e){}
+ setCookie(session);
+ // A magic link always lands on /career first, so its next is not where the user was headed.
+ const next=safeNext(fromLink?(load('jic_next')||'/'):(params.get('next')||load('jic_next')));
+ store('jic_next',null);
+ location.replace(next);
+}
+if(params.get('next')&&!fromLink)store('jic_next',safeNext(params.get('next')));
+try{
+ if(params.get('logout')){await supabase.auth.signOut();clearCookie();store('jic_next',null);status('Signed out.');showForm()}
+ else{const {data:{session}}=await supabase.auth.getSession();if(session)await finish(session);else showForm()}
+}catch(err){status(err.message,true);showForm()}
+$('login').onsubmit=async e=>{
+ e.preventDefault();$('send').disabled=true;status('');
+ try{
+  const typed=$('email').value.trim();
+  if(!ALLOWED.includes(typed.toLowerCase())){status('That email does not have access.',true);return}
+  const {error}=await supabase.auth.signInWithOtp({email:typed,options:{shouldCreateUser:true,emailRedirectTo:location.origin+'/career'}});
+  if(error)throw error;
+  status('Check your email for the sign-in link.');
+ }catch(err){status(/Database error/i.test(err.message)?'That email does not have access.':err.message,true)}finally{$('send').disabled=false}
+};
+</script></body></html>

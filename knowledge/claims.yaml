@@ -1,0 +1,18 @@
+# Scoped claim index. Source documents, not this file, remain the evidence.
+# visibility: public | interview_generalized | internal_only
+# evidence: public_disclosure | prior_public_profile | causal | observational | operational | qualitative | self_reported
+#
+# TEMPLATE. One entry per metric or strong claim on the owner's resume. The tailor sends this file to the
+# model and tells it to use approved_wording, keep each metric attached to its own program and era, and never
+# put internal_only claims in anything an employer reads. ONBOARDING.md builds this from
+# knowledge/career/career-source-of-truth.md section 3. Replace the example entry; delete this note when done.
+claims:
+  - id: example_claim_id
+    program: "Name of the program, project or period the number belongs to"
+    value: "the number as measured, e.g. +20% conversion versus control"
+    evidence: operational
+    visibility: interview_generalized
+    source: "knowledge/career/career-source-of-truth.md section 3"
+    approved_wording: "The sentence an employer-facing document may use for this claim."
+    caveat: "What the number does and does not show (period, sample, modeled versus realized)."
+    forbidden_attachment: ["another program or era this number must never be attached to"]

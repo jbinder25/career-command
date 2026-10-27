@@ -1,0 +1,39 @@
+{
+  "buildCommand": "echo \"static site: serving public/\"",
+  "outputDirectory": "public",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/career",
+      "permanent": false
+    }
+  ],
+  "functions": {
+    "api/job-scan.js": {
+      "maxDuration": 300,
+      "includeFiles": "knowledge/job-agent/**"
+    },
+    "api/tailor.js": {
+      "maxDuration": 300,
+      "includeFiles": "knowledge/**"
+    },
+    "api/apply.js": {
+      "maxDuration": 30,
+      "includeFiles": "knowledge/job-agent/**"
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/job-scan?slot=morning",
+      "schedule": "0 11 * * *"
+    },
+    {
+      "path": "/api/job-scan?slot=midday",
+      "schedule": "0 17 * * *"
+    },
+    {
+      "path": "/api/job-scan?slot=evening",
+      "schedule": "0 23 * * *"
+    }
+  ]
+}

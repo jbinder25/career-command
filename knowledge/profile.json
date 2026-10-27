@@ -1,0 +1,21 @@
+{
+  "_readme": "Who this copy of the app belongs to. The resume, cover-letter and application-answer prompts read every personal detail from here. TEMPLATE: every value below is a placeholder that ONBOARDING.md replaces. name: full name, also the cover-letter signature. first_name: used in prompts like \"Sell Alex honestly\". pronouns: subject/object/possessive (e.g. she/her/her), used wherever the prompts refer to the owner in the third person. current_title: the title the resume headline must begin with. city, state, home_base: where the owner lives; home_base is the full phrase used in prompts. hybrid_areas: nearby metro areas the owner would take hybrid roles in, written as they should appear in the prompt (e.g. \"Austin/San Antonio\"). resume_library: the file holding the approved resume bullets. tailor_rules: the file holding owner-specific tailoring rules (employer names, topic tags, salary hint); optional, an empty file is fine. sources: documents given to the model as facts, in order; each needs a label (shown to the model) and a path relative to the repo root. Keep style guide and resume library in the list; add the owner's own career documents after them.",
+  "name": "Your Name",
+  "first_name": "Your",
+  "pronouns": { "subject": "they", "object": "them", "possessive": "their" },
+  "current_title": "Your Current Title",
+  "city": "Your City",
+  "state": "Your State",
+  "home_base": "Your City, Your State",
+  "hybrid_areas": "Your City/Nearby City",
+  "resume_library": "knowledge/resume/resume-library.md",
+  "tailor_rules": "knowledge/resume/tailor-rules.md",
+  "sources": [
+    { "label": "Resume style guide", "path": "knowledge/resume/style-guide.md" },
+    { "label": "Resume library (approved bullets by role, plus header, summary, expertise and education)", "path": "knowledge/resume/resume-library.md" },
+    { "label": "Career source of truth", "path": "knowledge/career/career-source-of-truth.md" },
+    { "label": "Application facts (for form questions)", "path": "knowledge/resume/application-facts.md" },
+    { "label": "Claims index", "path": "knowledge/claims.yaml" },
+    { "label": "Editorial rules", "path": "knowledge/rules/editorial.md" }
+  ]
+}

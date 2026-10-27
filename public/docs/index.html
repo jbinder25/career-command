@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en" data-default-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f5f4f0">
+<script src="/shared/theme.js"></script>
+<script src="/shared/config.js"></script>
+<title>Developer guide</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f5f4f0;--panel:#ffffff;--soft:#faf9f6;--sunk:#efede6;
+  --fg:#25302b;--muted:#586660;--line:#e6e3da;
+  --accent:#2f6e4f;--accent-bg:#e7f2ec;--btn:#3d7a5a;--onbtn:#ffffff;
+  --warn:#8a4b12;--warn-bg:#fbeee6;--warn-line:#e8c3a5;
+  --code-bg:#f0eee7;--code-fg:#1f2a25;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121614;--panel:#1a201d;--soft:#212824;--sunk:#262e2a;
+  --fg:#e8ede9;--muted:#a3afa9;--line:#2c3631;
+  --accent:#6fbf94;--accent-bg:#1f3328;--btn:#3d7a5a;--onbtn:#ffffff;
+  --warn:#f0b98a;--warn-bg:#3a2418;--warn-line:#5a3a26;
+  --code-bg:#0e1210;--code-fg:#dfe8e2;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--font);-webkit-text-size-adjust:100%;overflow-wrap:break-word}
+a{color:var(--accent);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+header.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.brand{font-weight:700;letter-spacing:-.01em;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top-actions{display:flex;gap:8px;flex:none}
+.btn{font:inherit;font-size:14px;font-weight:600;padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;text-decoration:none;display:inline-block;line-height:1.3}
+.btn.primary{background:var(--btn);border-color:var(--btn);color:var(--onbtn)}
+.layout{max-width:1120px;margin:0 auto;padding:20px 16px 80px;display:block}
+nav.toc{font-size:14px}
+nav.toc details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:20px}
+nav.toc summary{cursor:pointer;font-weight:700}
+nav.toc ol{list-style:none;margin:10px 0 2px;padding:0;display:grid;gap:2px}
+nav.toc a{display:block;padding:5px 8px;border-radius:6px;text-decoration:none;color:var(--muted)}
+nav.toc a:hover,nav.toc a[aria-current="true"]{background:var(--accent-bg);color:var(--accent)}
+main{min-width:0;max-width:780px}
+h1{font-size:clamp(28px,5vw,38px);line-height:1.15;letter-spacing:-.025em;margin:0 0 10px}
+h2{font-size:24px;line-height:1.25;letter-spacing:-.015em;margin:48px 0 12px;padding-top:8px;border-top:1px solid var(--line)}
+h3{font-size:18px;margin:28px 0 8px}
+p{margin:0 0 14px}
+.lead{font-size:18px;color:var(--muted)}
+ul,ol{padding-left:22px;margin:0 0 14px}li{margin:4px 0}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);color:var(--code-fg);padding:.1em .35em;border-radius:5px;overflow-wrap:anywhere}
+.code{position:relative;margin:0 0 18px}
+.code pre{margin:0;background:var(--code-bg);color:var(--code-fg);border:1px solid var(--line);border-radius:10px;padding:14px 14px;overflow-x:auto;font:13.5px/1.55 var(--mono);tab-size:2}
+.code pre code{background:none;padding:0;font-size:inherit;overflow-wrap:normal}
+.code .lang{position:absolute;left:12px;top:-9px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:0 7px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.copy{position:absolute;right:8px;top:8px;font:inherit;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.code pre{padding-right:70px}
+.callout{border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--panel);border-radius:10px;padding:12px 16px;margin:0 0 18px}
+.callout p:last-child{margin:0}.callout strong.t{display:block;margin-bottom:2px}
+.callout.warn{border-left-color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+.callout.warn strong.t{color:var(--warn)}
+.tablewrap{overflow-x:auto;margin:0 0 18px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--soft);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+figure{margin:0 0 20px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-size:13.5px;color:var(--muted);padding:8px 6px 2px}
+.cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin:0 0 18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.card b{display:block;margin-bottom:2px}.card span{font-size:14.5px;color:var(--muted)}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;position:relative;padding:2px 0 2px 38px;margin:10px 0}
+.steps li::before{content:counter(s);position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;background:var(--accent-bg);color:var(--accent);font-weight:700;font-size:13px;display:grid;place-items:center}
+footer{margin-top:56px;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+@media(min-width:900px){
+  .layout{display:grid;grid-template-columns:220px minmax(0,780px);gap:48px;justify-content:center}
+  nav.toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 96px);overflow:auto}
+  nav.toc details{border:0;background:none;padding:0}
+  nav.toc summary{display:none}
+}
+@media print{header.top,nav.toc,.copy{display:none}.layout{display:block}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand" id="brand">Developer guide</div>
+  <div class="top-actions">
+    <a class="btn primary" href="/career">Back to Career</a>
+    <button class="btn" type="button" data-theme-toggle data-theme-text="short">Dark</button>
+  </div>
+</div></header>
+
+<div class="layout">
+<nav class="toc" aria-label="Table of contents"><details id="tocbox" open>
+<summary>Contents</summary>
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#data">Data model</a></li>
+<li><a href="#security">Auth and security</a></li>
+<li><a href="#agent">Job agent pipeline</a></li>
+<li><a href="#tailor">Tailoring</a></li>
+<li><a href="#config">Configuration files</a></li>
+<li><a href="#env">Environment variables</a></li>
+<li><a href="#scripts">Scripts</a></li>
+<li><a href="#testing">Testing</a></li>
+<li><a href="#deploy">Deploying</a></li>
+<li><a href="#upgrade">Updating from upstream</a></li>
+<li><a href="#trouble">Troubleshooting</a></li>
+</ol></details></nav>
+
+<main>
+<h1>Developer guide</h1>
+<p class="lead">How this career app is built, how its pieces talk to each other, and where to change things. Read top to bottom once, then use the contents as a map.</p>
+
+<h2 id="overview">Overview</h2>
+<p>A private job-search workspace for one person. It has three jobs:</p>
+<div class="cards">
+<div class="card"><b>Track</b><span>Opportunities, stages, next actions, interviews, contacts and documents at <code>/career</code>.</span></div>
+<div class="card"><b>Discover</b><span>A scheduled scan reads company job boards, filters by your rules and queues new postings.</span></div>
+<div class="card"><b>Tailor</b><span>Picks approved resume bullets and drafts a cover letter from facts you supplied.</span></div>
+</div>
+<p>There is no build step and no framework: static HTML pages in <code>public/</code>, a login gate in <code>middleware.js</code>, three small serverless functions in <code>api/</code>, and a Supabase (Postgres) database. Only <code>public/</code> is published.</p>
+<div class="callout"><p><strong class="t">Free mode is the default.</strong> With no AI key set in Vercel, discovery and surfacing run on Vercel cron and the AI steps (scoring, tailoring) are done by Claude sessions on your Claude plan through the Supabase connector. See <a href="#agent">Job agent pipeline</a>.</p></div>
+
+<h2 id="architecture">Architecture</h2>
+<figure>
+<svg viewBox="0 0 760 430" role="img" aria-labelledby="archT archD" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,Segoe UI,sans-serif">
+<title id="archT">Architecture diagram</title>
+<desc id="archD">The browser loads static pages through a Vercel middleware login gate and calls API functions. Functions and the browser talk to Supabase. A Vercel cron calls the job scan function. A scheduled Claude task writes to Supabase through the Supabase connector and private.job_agent_op.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>
+<style>
+.bx{fill:var(--soft);stroke:var(--line);stroke-width:1.5}.bx.ac{fill:var(--accent-bg);stroke:var(--accent)}
+.t1{fill:var(--fg);font-size:14px;font-weight:700}.t2{fill:var(--muted);font-size:12px}
+.ln{stroke:var(--muted);stroke-width:1.6;fill:none}.lb{fill:var(--muted);font-size:11.5px}
+.zone{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:5 5}.zl{fill:var(--muted);font-size:12px;font-weight:700;letter-spacing:.06em}
+</style>
+<rect class="zone" x="150" y="14" width="400" height="290" rx="14"/><text class="zl" x="166" y="36">VERCEL</text>
+<rect class="zone" x="150" y="330" width="400" height="86" rx="14"/><text class="zl" x="166" y="352">SUPABASE</text>
+
+<rect class="bx" x="14" y="86" width="116" height="62" rx="10"/><text class="t1" x="72" y="113" text-anchor="middle">Browser</text><text class="t2" x="72" y="132" text-anchor="middle">you, signed in</text>
+
+<rect class="bx ac" x="176" y="52" width="170" height="54" rx="10"/><text class="t1" x="261" y="76" text-anchor="middle">middleware.js</text><text class="t2" x="261" y="94" text-anchor="middle">login gate (cookie)</text>
+<rect class="bx" x="372" y="52" width="150" height="54" rx="10"/><text class="t1" x="447" y="76" text-anchor="middle">Static pages</text><text class="t2" x="447" y="94" text-anchor="middle">/career /login /docs</text>
+<rect class="bx" x="176" y="150" width="346" height="60" rx="10"/><text class="t1" x="349" y="176" text-anchor="middle">API functions</text><text class="t2" x="349" y="195" text-anchor="middle">job-scan  ·  tailor  ·  apply</text>
+<rect class="bx" x="176" y="238" width="170" height="48" rx="10"/><text class="t1" x="261" y="260" text-anchor="middle">Vercel Cron</text><text class="t2" x="261" y="277" text-anchor="middle">3 times a day</text>
+
+<rect class="bx ac" x="176" y="366" width="346" height="42" rx="10"/><text class="t1" x="349" y="392" text-anchor="middle">Postgres + Auth + Storage (RLS on)</text>
+
+<rect class="bx" x="590" y="330" width="156" height="86" rx="10"/><text class="t1" x="668" y="360" text-anchor="middle">Scheduled Claude task</text><text class="t2" x="668" y="379" text-anchor="middle">your Claude plan,</text><text class="t2" x="668" y="394" text-anchor="middle">Supabase connector</text>
+<rect class="bx" x="590" y="150" width="156" height="60" rx="10"/><text class="t1" x="668" y="176" text-anchor="middle">Job boards</text><text class="t2" x="668" y="195" text-anchor="middle">Greenhouse · Lever · Ashby</text>
+
+<path class="ln" d="M130 100H176" marker-end="url(#ah)"/><text class="lb" x="136" y="92">pages</text>
+<path class="ln" d="M346 79H372" marker-end="url(#ah)"/>
+<path class="ln" d="M130 134H152V180H176" marker-end="url(#ah)"/><text class="lb" x="136" y="152">/api</text>
+<path class="ln" d="M261 106V150" marker-end="url(#ah)"/>
+<path class="ln" d="M72 148V387H176" marker-end="url(#ah)"/><text class="lb" x="80" y="300">direct, with RLS</text>
+<path class="ln" d="M349 210V366" marker-end="url(#ah)"/><text class="lb" x="356" y="300">rpc / SQL</text>
+<path class="ln" d="M261 238V212" marker-end="url(#ah)"/><text class="lb" x="268" y="230">GET ?slot=</text>
+<path class="ln" d="M522 180H590" marker-end="url(#ah)"/><text class="lb" x="534" y="172">read</text>
+<path class="ln" d="M590 388H522" marker-end="url(#ah)"/><text class="lb" x="534" y="380">job_agent_op</text>
+</svg>
+<figcaption>The browser also talks to Supabase directly (sign-in and the tracker's reads and writes), protected by row-level security. Every page except <code>/login</code> goes through the middleware gate; <code>/api/job-scan</code> is exempt from the cookie check and uses its own secret.</figcaption>
+</figure>
+<ul>
+<li><b>Browser to Supabase:</b> the tracker uses <code>supabase-js</code> with the signed-in user's token. Row-level security decides what it can see.</li>
+<li><b>Vercel Cron to <code>/api/job-scan</code>:</b> sends <code>Authorization: Bearer $CRON_SECRET</code>. The function then calls the database through <code>public.job_agent_rpc</code> with <code>JOB_AGENT_SECRET</code>.</li>
+<li><b>Scheduled Claude task to Supabase:</b> the Supabase connector runs SQL as the project owner, so it calls <code>private.job_agent_op</code> directly. No secret is needed.</li>
+</ul>
+
+<h2 id="data">Data model</h2>
+<p>The complete schema is <code>supabase/schema.sql</code> (run once on a new project). <code>supabase/migrations/</code> is history only.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Table</th><th>Purpose</th><th>Key columns</th></tr></thead>
+<tbody>
+<tr><td><code>jobs</code></td><td>One row per opportunity you track.</td><td><code>company, title, stage, next_action, next_date, action_owner (Me/Company/Unassigned), posting_url, compensation, notes, recruiter</code></td></tr>
+<tr><td><code>activities</code></td><td>Dated log of messages, calls, drafts and milestones, per job.</td><td><code>job_id, kind, summary, details, occurred_at, direction, channel, stage_at_time, status</code></td></tr>
+<tr><td><code>interview_rounds</code></td><td>Scheduled and past interviews.</td><td><code>job_id, round_type, status, scheduled_at, interviewer_name, meeting_url, prep_notes</code></td></tr>
+<tr><td><code>contacts</code></td><td>Recruiters and other people.</td><td><code>job_id, name, role, email, profile_url</code></td></tr>
+<tr><td><code>documents</code>, <code>document_versions</code>, <code>job_documents</code></td><td>Resume and letter files (stored in the private <code>career-documents</code> storage bucket), their versions, and which job each was prepared for.</td><td><code>kind (resume/cover_letter/other), storage_path, version_number, job_id, purpose</code></td></tr>
+<tr><td><code>job_leads</code></td><td>Every posting the scan finds, with its score and your decision.</td><td><code>lead_key (unique), company, title, url, description, status, score, evaluation (json), tier, surfaced_at, decided_at, reject_reason, job_id</code></td></tr>
+<tr><td><code>job_sources</code></td><td>Which job board was found for each company, and its health.</td><td><code>company, board, status, jobs_seen, last_error</code></td></tr>
+<tr><td><code>job_agent_runs</code></td><td>Log of each scan or scoring run.</td><td><code>started_at, finished_at, stats (json)</code></td></tr>
+<tr><td><code>private.job_agent_config</code></td><td>One row: owner email and the SHA-256 of the job agent secret. Not reachable through the API.</td><td><code>owner_email, secret_sha256</code></td></tr>
+</tbody></table></div>
+<p><code>job_leads.status</code> moves through: <code>filtered</code> (dropped by hard rules), <code>pending</code> (waiting to be scored), <code>scored</code>, <code>review</code> (shown in the Leads tab), then <code>accepted</code> or <code>rejected</code>; <code>error</code> after a failed scoring attempt (retried up to 3 times). Accepting a lead creates a <code>jobs</code> row and links it through <code>job_id</code>.</p>
+
+<h2 id="security">Auth and security</h2>
+<ol class="steps">
+<li><b>Magic link.</b> <code>/login</code> asks for an email, checks it against <code>ownerEmails</code> in <code>public/shared/config.js</code>, and asks Supabase Auth to email a sign-in link (no passwords).</li>
+<li><b>Sign-up gate.</b> A trigger on <code>auth.users</code> (<code>private.only_owner_signup</code>) rejects any sign-up whose email is not the one in <code>private.job_agent_config</code>. With no config row, everyone is blocked.</li>
+<li><b>Cookie.</b> After sign-in the login page stores the access token in a <code>jic_at</code> cookie (Secure, SameSite=Lax).</li>
+<li><b>Gate.</b> <code>middleware.js</code> runs on every request except <code>/login</code>, <code>/favicon.ico</code>, <code>/shared/theme.js</code>, <code>/shared/config.js</code> and <code>/api/job-scan</code>. It validates the token with Supabase (<code>/auth/v1/user</code>, cached for up to 5 minutes) and requires the email to be in <code>ownerEmails</code>. Pages redirect to <code>/login</code>; <code>/api/*</code> returns 401 JSON.</li>
+<li><b>Row-level security.</b> All tables have RLS on. Restrictive policies call <code>public.is_owner()</code>, which compares the token's email to <code>owner_email</code>. Even a valid account that is not the owner reads nothing. Storage objects in the <code>career-documents</code> bucket have the same rule.</li>
+<li><b>Job agent secret.</b> <code>public.job_agent_rpc(p_secret, p_op, p_payload)</code> is callable by the anonymous role, but raises <code>unauthorized</code> unless <code>sha256(p_secret)</code> matches the stored hash. The logic lives in <code>private.job_agent_op</code>, which only the database owner and service roles can run. <code>/api/job-scan</code> itself requires <code>CRON_SECRET</code>.</li>
+</ol>
+<div class="callout warn"><p><strong class="t">What is public and what is not.</strong> The Supabase URL and publishable key in <code>config.js</code> are meant to be public (RLS protects the data). Never commit <code>CRON_SECRET</code>, <code>JOB_AGENT_SECRET</code>, an AI API key, or a Supabase secret or service-role key. Keep the repository private: it holds your career history.</p></div>
+
+<h2 id="agent">Job agent pipeline</h2>
+<p>Four stages. The first and last always run on Vercel; the third runs on Vercel (API mode) or in a Claude task (free mode).</p>
+<ol class="steps">
+<li><b>Discover.</b> Read every board: the favorites in <code>companies.json</code> (tiered) and the open boards in <code>open-boards.json</code> (found by <code>scripts/discover-boards.mjs</code> from <code>company-seeds.txt</code>). Boards for favorites are guessed from the name and remembered in <code>job_sources</code>. New postings are saved to <code>job_leads</code>; postings no longer listed are marked closed.</li>
+<li><b>Filter</b> (no AI cost). <code>search.json</code> rules: title must be a target role and level (or the optional stretch level at a higher pay bar), location must match the home metro or US-remote, the posting must be recent, and pay must clear the floor when stated. Failures are stored as <code>filtered</code> with the reason.</li>
+<li><b>Score.</b> Pending leads (favorites first) are evaluated against <code>rubric.md</code> and <code>scoring-instructions.md</code>, with your 25 most recent accept/reject decisions as calibration. The result is category scores, a total, a recommendation, dealbreakers and the report text shown on the lead card. A favorite-tier bump is added after scoring (<code>tier_bump</code>).</li>
+<li><b>Surface.</b> A scored lead goes to <code>review</code> only if its score meets the bar (default 80), it has no dealbreakers, its location is eligible, it is not "Do not recommend", and its pay clears the <code>pay</code> bars (unlisted or borderline pay needs 90+). The best go first, up to the daily cap (default 15 per local day), from leads first seen in the last 14 days.</li>
+</ol>
+<div class="tablewrap"><table>
+<thead><tr><th></th><th>Free mode (default)</th><th>API mode</th></tr></thead>
+<tbody>
+<tr><td>Key in Vercel</td><td>none</td><td><code>ANTHROPIC_API_KEY</code> (or <code>AI_GATEWAY_API_KEY</code>)</td></tr>
+<tr><td>Discover, filter, surface</td><td>Vercel cron, <code>/api/job-scan</code></td><td>same</td></tr>
+<tr><td>Score</td><td>Skipped by the cron (reports <code>score_skipped</code>). A scheduled Claude Code task follows <code>docs/claude/score-leads.md</code>, up to 15 leads per run.</td><td>The cron scores up to 30 pending leads per run with the Anthropic API.</td></tr>
+<tr><td>Cost</td><td>Your Claude plan's usage</td><td>Pay per API token</td></tr>
+</tbody></table></div>
+<h3>Cron schedule</h3>
+<p><code>vercel.json</code> defines three cron jobs calling <code>/api/job-scan?slot=morning|midday|evening</code> at 11:00, 17:00 and 23:00 UTC. They are separate jobs because Hobby allows each job to run only once a day. Times are UTC; change them in <code>vercel.json</code>. Each call runs discover, score and surface in order.</p>
+<h3>Run a step by hand</h3>
+<div class="code"><span class="lang">http</span><button class="copy" type="button">Copy</button><pre><code>GET /api/job-scan?step=discover&amp;key=&lt;CRON_SECRET&gt;
+GET /api/job-scan?step=score&amp;key=&lt;CRON_SECRET&gt;
+GET /api/job-scan?step=surface&amp;key=&lt;CRON_SECRET&gt;</code></pre></div>
+<p>The response is JSON stats (<code>boards_ok</code>, <code>new_postings</code>, <code>scored</code>, <code>surfaced</code>, ...). A <code>fatal</code> field means the run stopped. Each run is also logged in <code>job_agent_runs</code>.</p>
+<h3>The scheduled Claude task (free mode)</h3>
+<p>A scheduled Claude Code task on the repository, with the Supabase connector attached, follows <code>docs/claude/score-leads.md</code>: fetch pending leads with <code>private.job_agent_op('pending')</code>, read the brief with <code>scripts/leads.mjs</code>, write evaluations, save them with <code>save_score</code>, surface, and log the run. Daily is enough.</p>
+
+<h2 id="tailor">Tailoring</h2>
+<p><code>api/_lib/tailor.js</code> builds all prompts from <code>knowledge/profile.json</code> and the documents it lists. The model never writes a resume freehand: it selects approved bullets from <code>knowledge/resume/resume-library.md</code> (tagged by topic; variants of one achievement share a tag), lightly rewords them, and code composes the resume and checks it against the style guide (about 450 words, at most 12 bullets). The cover letter is checked for length (250 to 330 words), clichés and signature.</p>
+<ul>
+<li><b>In the app (API mode):</b> the Tailor button calls <code>POST /api/tailor</code>. It needs <code>ANTHROPIC_API_KEY</code>.</li>
+<li><b>Free mode:</b> without the key the page shows a copy-and-paste instruction for a Claude Code session, which follows <code>docs/claude/tailor-with-claude.md</code> using the same prompts and saves the drafts as activities on the job.</li>
+<li><b>Facts:</b> only from the files in <code>profile.json</code> <code>sources</code>. The job description is treated as untrusted text.</li>
+</ul>
+<p>Print the exact prompts any time:</p>
+<div class="code"><span class="lang">sh</span><button class="copy" type="button">Copy</button><pre><code>node -e "console.log(require('./api/_lib/tailor').SYSTEM)"</code></pre></div>
+
+<h2 id="config">Configuration files</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>File</th><th>What it controls</th></tr></thead>
+<tbody>
+<tr><td><code>public/shared/config.js</code></td><td><code>siteName</code>, <code>appName</code> (name shown on the career page), <code>ownerName</code>, <code>ownerEmails</code> (lowercase), <code>supabaseUrl</code>, <code>supabaseKey</code> (publishable), <code>timezone</code> (used for the daily cap). Read by the pages, the middleware and the functions. The only place the Supabase URL and key may appear.</td></tr>
+<tr><td><code>knowledge/profile.json</code></td><td>Name, pronouns, current title, city and state, hybrid areas, the resume library path, and <code>sources</code>: the ordered documents handed to the tailoring prompts as facts.</td></tr>
+<tr><td><code>knowledge/job-agent/search.json</code></td><td>Hard filters and bars: title regexes (<code>pm_phrase</code>, <code>not_pm_phrase</code>, <code>target_level</code>, <code>too_senior_or_junior</code>, <code>stretch_level</code>), <code>location.home</code>, <code>max_age_days</code>, <code>pay.floor / target / senior_min</code>, <code>tier_bump</code>. Retarget the search here, not in code.</td></tr>
+<tr><td><code>knowledge/job-agent/rubric.md</code></td><td>Your search brief: who you are, what you want, what to avoid. Sent to the scorer as instructions.</td></tr>
+<tr><td><code>knowledge/job-agent/scoring-instructions.md</code></td><td>Step-by-step scoring procedure, category weights and pay anchors. Appended to the rubric.</td></tr>
+<tr><td><code>knowledge/job-agent/companies.json</code></td><td>Favorite companies with a tier (1 is most wanted) and optional known board ids.</td></tr>
+<tr><td><code>knowledge/job-agent/company-seeds.txt</code>, <code>open-boards.json</code></td><td>Extra company names to scan, and the boards found for them (generated by <code>scripts/discover-boards.mjs</code>).</td></tr>
+<tr><td><code>knowledge/resume/resume-library.md</code></td><td>Master resume and approved bullets by role. Parsed by code, so keep its heading structure.</td></tr>
+<tr><td><code>knowledge/resume/style-guide.md</code></td><td>House rules for resumes and letters (length, tone, banned phrasing). Sent with every tailoring request and enforced in code.</td></tr>
+<tr><td><code>knowledge/resume/tailor-rules.md</code></td><td>Owner-specific tailoring rules, merged into the tailor prompts by section (<code>resume.emphasis</code>, <code>resume.leave-out</code>, <code>resume.vocabulary</code>, <code>resume.rules</code>, <code>answers.salary</code>).</td></tr>
+<tr><td><code>knowledge/resume/application-facts.md</code></td><td>Confirmed facts for application-form questions. Anything missing is flagged "Needs you" rather than answered.</td></tr>
+<tr><td><code>knowledge/claims.yaml</code>, <code>knowledge/rules/editorial.md</code></td><td>Approved wording for metrics, where each may be used, and confidentiality rules.</td></tr>
+<tr><td><code>vercel.json</code></td><td>Output directory (<code>public</code>), function time limits and bundled files, and the cron schedule.</td></tr>
+</tbody></table></div>
+
+<h2 id="env">Environment variables (Vercel)</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Name</th><th>Required</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>CRON_SECRET</code></td><td>yes</td><td>Random string. Vercel Cron sends it as a bearer token; it is also the <code>key</code> for manual runs.</td></tr>
+<tr><td><code>JOB_AGENT_SECRET</code></td><td>yes</td><td>Random string whose SHA-256 is stored in <code>private.job_agent_config</code>. Lets the scan call <code>job_agent_rpc</code>.</td></tr>
+<tr><td><code>ANTHROPIC_API_KEY</code></td><td>no</td><td>Turns on API mode (scoring in the cron and the in-app Tailor button). Leave unset for free mode.</td></tr>
+<tr><td><code>AI_GATEWAY_API_KEY</code></td><td>no</td><td>Alternative for scoring through the Vercel AI Gateway.</td></tr>
+<tr><td><code>JOB_AGENT_DAILY_CAP</code></td><td>no</td><td>Leads surfaced per day. Default 15.</td></tr>
+<tr><td><code>JOB_AGENT_MIN_SCORE</code></td><td>no</td><td>Score needed to surface. Default 80.</td></tr>
+<tr><td><code>JOB_AGENT_SCORE_LIMIT</code></td><td>no</td><td>Leads scored per cron run in API mode. Default 30.</td></tr>
+<tr><td><code>JOB_AGENT_SENIOR_MIN_PAY</code></td><td>no</td><td>Overrides <code>pay.senior_min</code> in <code>search.json</code>.</td></tr>
+<tr><td><code>JOB_AGENT_MODEL</code>, <code>TAILOR_MODEL</code>, <code>TAILOR_GAP_MODEL</code></td><td>no</td><td>Override the models used in API mode.</td></tr>
+</tbody></table></div>
+<p>After changing an environment variable, redeploy: values are read at deploy time.</p>
+
+<h2 id="scripts">Scripts</h2>
+<p><code>scripts/leads.mjs</code> is an offline helper used by the scoring task. It makes no network calls and touches no database; the Claude session moves JSON between Supabase and the script.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Command</th><th>Does</th></tr></thead>
+<tbody>
+<tr><td><code>node scripts/leads.mjs brief</code></td><td>Prints the scoring instructions and the JSON Schema of one evaluation.</td></tr>
+<tr><td><code>node scripts/leads.mjs prompts pending.json [feedback.json]</code></td><td>Prints each pending lead as a block (<code>=== LEAD &lt;id&gt; ===</code>) with your recent decisions.</td></tr>
+<tr><td><code>node scripts/leads.mjs finalize pending.json evaluations.json</code></td><td>Validates evaluations, computes totals and the favorite bump, and prints one <code>save_score</code> SQL statement per lead. Exits 2 and lists problems if any evaluation is invalid.</td></tr>
+<tr><td><code>node scripts/leads.mjs surface pool.json</code></td><td>Applies the surfacing rules to the eligible pool and prints the <code>surface</code> SQL, or <code>-- nothing eligible</code>.</td></tr>
+<tr><td><code>node scripts/discover-boards.mjs [--recheck]</code></td><td>Finds job boards for names in <code>company-seeds.txt</code> and writes <code>open-boards.json</code>.</td></tr>
+</tbody></table></div>
+
+<h2 id="testing">Testing</h2>
+<div class="code"><span class="lang">sh</span><button class="copy" type="button">Copy</button><pre><code>npm ci
+node --test            # or: npm test</code></pre></div>
+<p>The tests cover the config shape (and that the Supabase URL appears only in <code>config.js</code>), the job filters and surfacing rules, the board readers, tailoring limits and style checks, the <code>leads.mjs</code> helper, and the theme script. Run them before every push.</p>
+
+<h2 id="deploy">Deploying</h2>
+<ol class="steps">
+<li>Edit files, run <code>node --test</code>.</li>
+<li>Commit and push to the default branch. Vercel builds automatically (the build command only echoes; <code>public/</code> is served as is).</li>
+<li>Wait for the deployment to be <b>Ready</b>, then open the production URL and check <code>/login</code> (200), <code>/career</code> (signed out, redirects to <code>/login</code>) and any page you changed.</li>
+</ol>
+<div class="callout warn"><p><strong class="t">Only <code>public/</code> is published.</strong> A page placed anywhere else is not served. Link to clean URLs such as <code>/career</code>.</p></div>
+<p>Database changes: add <code>supabase/migrations/&lt;yyyymmdd&gt;_&lt;name&gt;.sql</code>, apply it to the live project, and fold the same change into <code>supabase/schema.sql</code> so a fresh project matches.</p>
+
+<h2 id="upgrade">Updating from upstream</h2>
+<p>This app began as an exported template. When a newer export is available, merge it on a branch. Keep your own <code>public/shared/config.js</code>, everything under <code>knowledge/</code>, and any edits to <code>vercel.json</code>. If <code>supabase/schema.sql</code> changed, apply only the new statements to your live database (never re-run the whole file on a project with data). Run the tests, push, and verify the deployed site.</p>
+
+<h2 id="trouble">Troubleshooting</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Symptom</th><th>Likely cause and fix</th></tr></thead>
+<tbody>
+<tr><td>Magic link opens <code>localhost</code></td><td>Supabase, Authentication, URL Configuration: set Site URL to your site address.</td></tr>
+<tr><td>"That email does not have access."</td><td>The email is not in <code>ownerEmails</code>, or the <code>private.job_agent_config</code> row is missing or has a different email.</td></tr>
+<tr><td>Every <code>/api</code> call is 401 "Sign in required"</td><td>Session cookie rejected. Sign out (<code>/login?logout=1</code>) and in; check <code>config.js</code> points at the right project.</td></tr>
+<tr><td><code>/api/job-scan</code> is 401 or 503</td><td>Wrong <code>key</code> (must equal <code>CRON_SECRET</code>), or <code>JOB_AGENT_SECRET</code> not set. Redeploy after changing env vars.</td></tr>
+<tr><td><code>job_agent_rpc: unauthorized</code></td><td>The Vercel <code>JOB_AGENT_SECRET</code> does not hash to <code>secret_sha256</code> in the config row.</td></tr>
+<tr><td>Cron not running</td><td>Check Vercel, Settings, Cron Jobs, and the newest <code>job_agent_runs</code> rows. Hobby limits each job to once a day.</td></tr>
+<tr><td>Leads stay <code>pending</code></td><td>Normal in free mode until the scheduled Claude task runs. Check it is enabled and has the Supabase connector.</td></tr>
+<tr><td>Supabase requests time out</td><td>Free projects pause after about 7 days idle. Restore the project in the dashboard; the daily cron keeps it awake afterwards.</td></tr>
+<tr><td>"Tailoring here needs an API key"</td><td>Free mode. Use the pasted instruction in Claude Code (<code>docs/claude/tailor-with-claude.md</code>), or set <code>ANTHROPIC_API_KEY</code>.</td></tr>
+</tbody></table></div>
+
+<footer>Source: <code>public/docs/index.html</code>. If this page and the code disagree, trust the code and fix this page.</footer>
+</main>
+</div>
+
+<script>
+(function(){
+  try{var c=window.CAREER_CONFIG;if(c&&c.siteName){document.getElementById('brand').textContent=c.siteName+' · Developer guide';document.title='Developer guide · '+c.siteName}}catch(e){}
+  // Copy buttons
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var text=b.parentNode.querySelector('pre').innerText;
+      function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fallback)}else fallback();
+      function fallback(){var t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(t)}
+    });
+  });
+  // Contents: collapsed on phones, open on wide screens
+  var box=document.getElementById('tocbox'),mq=window.matchMedia('(min-width:900px)');
+  function sync(){if(mq.matches)box.setAttribute('open','');else box.removeAttribute('open')}
+  sync();if(mq.addEventListener)mq.addEventListener('change',sync);
+  box.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){if(!mq.matches)box.removeAttribute('open')})});
+  // Highlight current section
+  var links={};box.querySelectorAll('a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){Object.keys(links).forEach(function(k){links[k].removeAttribute('aria-current')});var a=links[e.target.id];if(a)a.setAttribute('aria-current','true')}})},{rootMargin:'-70px 0px -70% 0px'});
+    document.querySelectorAll('main h2[id]').forEach(function(h){io.observe(h)});
+  }
+})();
+</script>
+</body>
+</html>

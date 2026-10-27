@@ -1,0 +1,25 @@
+{
+ "name": "readme-demo",
+ "private": true,
+ "type": "module",
+ "scripts": {
+  "capture": "node capture.mjs",
+  "capture:mobile": "node capture-mobile.mjs",
+  "render:teaser": "./render-teaser.sh",
+  "render:teaser-v2": "./render-teaser-v2.sh",
+  "render:landscape": "./render-landscape.sh",
+  "render": "./render.sh"
+ },
+ "dependencies": {
+  "@remotion/bundler": "4.0.538",
+  "@remotion/cli": "4.0.538",
+  "@remotion/renderer": "4.0.538",
+  "@remotion/transitions": "4.0.538",
+  "react": "^19.3.1",
+  "react-dom": "^19.3.1",
+  "remotion": "4.0.538"
+ },
+ "devDependencies": {
+  "gifsicle": "^7.0.1"
+ }
+}

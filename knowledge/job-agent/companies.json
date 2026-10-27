@@ -1,0 +1,4 @@
+{
+  "_note": "Favorite companies the daily scan reads first and gives a score bump (tier 1 = most wanted, 3 = least; see tier_bump in search.json). Add entries like {\"name\": \"Acme\", \"tier\": 1, \"boards\": [\"greenhouse:acme\"]}. boards lists known job-board IDs (greenhouse:<slug>, lever:<slug>, ashby:<slug>); when empty the scan guesses slugs from the name. Every other company comes from open-boards.json, so this list can stay empty.",
+  "companies": []
+}

@@ -1,0 +1,44 @@
+{
+  "_readme": "TODO (ONBOARDING.md, job-agent step): retarget this file to the owner's search before the first scan. Everything about WHO the roles are for lives here, so the code never changes. Regexes are {source, flags} and are matched against the job title (or location). title.pm_phrase: a title must match this to count as a product-management role. title.not_pm_phrase: titles matching this are dropped even if they match pm_phrase (product marketing, design, etc). title.too_senior_or_junior: levels you never want (VP, intern...). title.target_level: levels you want; these pass the title filter. title.stretch_level: an optional step below target (for example Senior) that is allowed only at a higher pay bar and score; use null to turn it off. location.home: places that always qualify (your metro area). location.reason: text stored when a posting is dropped for location. Remote US postings always qualify. max_age_days: postings older than this are dropped when the board gives a date. pay.senior_min: top-of-range base pay a stretch-level posting must reach (env JOB_AGENT_SENIOR_MIN_PAY overrides). pay.senior_extra_score: extra score points a stretch-level lead needs to surface. pay.target: base pay at or above this surfaces at the normal score bar. pay.floor: base pay between floor and target, or not listed, needs a score of 90+; below floor never surfaces. tier_bump: points added after scoring for favorite companies in companies.json, by tier (1 = most wanted). prompts.stretch_level_line: the line added to the scoring prompt for a stretch-level title (null for none). The scoring rubric is rubric.md and the scoring steps are scoring-instructions.md; edit those for your own pay anchors, city and levels. TEMPLATE DEFAULTS: title patterns target product-management roles at Principal, Staff, Group, Director and Head level; change them for your field (for example engineering or design titles). location.home is a placeholder that matches nothing real, so until you set it only US-remote postings qualify. Replace it with a regex of your metro area and nearby places. stretch_level and prompts.stretch_level_line are null, which switches the stretch-level rule off. pay.target and pay.floor are 0 so no pay bar applies, but a posting with no listed pay still needs a score of 90+; set pay.target to your base-pay goal and pay.floor to the lowest base you would consider. location.reason should name your home area.",
+  "title": {
+    "pm_phrase": {
+      "source": "product manag(er|ement)|\\bproduct lead\\b|\\bproduct director\\b|\\bdirector(,| of)? product\\b|\\bhead of product\\b|\\bgroup product\\b|\\blead product manager\\b",
+      "flags": "i"
+    },
+    "not_pm_phrase": {
+      "source": "\\bproduct (marketing|design|designer|operations|partnerships?|sales|analyst|analytics|engineer|engineering|security|compliance|policy|counsel|data|enablement|line|researcher|support)\\b",
+      "flags": "i"
+    },
+    "target_level": {
+      "source": "\\b(principal|staff|group product|director|head of product|lead product|product lead|lead,? product|product management lead)\\b",
+      "flags": "i"
+    },
+    "too_senior_or_junior": {
+      "source": "\\b(vp|vice president|chief|cpo|svp|evp|intern|internship|associate|junior|apm|new grad)\\b",
+      "flags": "i"
+    },
+    "stretch_level": null
+  },
+  "location": {
+    "home": {
+      "source": "\\b(your city|your state)\\b",
+      "flags": "i"
+    },
+    "reason": "location outside your home area and not US-remote"
+  },
+  "max_age_days": 45,
+  "pay": {
+    "senior_min": 0,
+    "senior_extra_score": 5,
+    "target": 0,
+    "floor": 0
+  },
+  "tier_bump": {
+    "1": 5,
+    "2": 3,
+    "3": 1
+  },
+  "prompts": {
+    "stretch_level_line": null
+  }
+}
