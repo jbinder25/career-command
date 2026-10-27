@@ -106,12 +106,15 @@ body{font:15px 'DM Sans',system-ui,sans-serif;background:var(--c-111827-b);color
 .lead-passed-row button{flex:none;font-size:12px;padding:7px 11px}
 .lead-modal{position:fixed;inset:0;z-index:100;background:#0c110ed9;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
 .lead-modal.hidden,.lead-passed.hidden{display:none}
+/* While a modal is open the page behind it must not scroll (iOS otherwise scrolls the page when a swipe starts outside the dialog's scroller). */
+html.scroll-locked{overflow:hidden}html.scroll-locked body{position:fixed;left:0;right:0;width:100%;overflow:hidden}
+.lead-modal,.job-doc-preview-backdrop,.lead-dialog-body,.job-doc-preview-content{overscroll-behavior:contain}
 .lead-dialog{background:var(--c-111c2e-b);border:1px solid var(--c-405774-o);border-radius:10px;width:min(720px,100%);max-height:min(90dvh,900px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 70px #0009}
 .lead-dialog.small{width:min(440px,100%)}
 .lead-dialog-head{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-bottom:1px solid var(--c-2c3f56-o)}
 .lead-dialog-head .lead-id h3{font-size:19px}
 .lead-close{flex:none;background:transparent!important;border:0!important;color:var(--c-9fb2cb-t);font-size:22px;line-height:1;padding:4px 6px}
-.lead-dialog-body{overflow:auto;padding:4px 20px 18px;font-size:14px;line-height:1.55}
+.lead-dialog-body{flex:1 1 auto;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;padding:4px 20px 18px;font-size:14px;line-height:1.55}
 .lead-dialog-body h4{margin:18px 0 6px;font-size:12px;font-weight:600;color:var(--c-8fa6c2-t)}
 .lead-dialog-body ul{margin:0;padding-left:18px}
 .lead-dialog-body li{margin:3px 0}
@@ -446,6 +449,10 @@ let leadModalCancel=null;
 function closeLeadModal(){const f=leadModalCancel;leadModalCancel=null;f&&f();const m=$('lead-modal');m.classList.add('hidden');m.innerHTML=''}
 function openLeadModal(html,small){const f=leadModalCancel;leadModalCancel=null;f&&f();const m=$('lead-modal');m.innerHTML='<div class="lead-dialog'+(small?' small':'')+'" role="dialog" aria-modal="true">'+html+'</div>';m.classList.remove('hidden');m.onclick=e=>{if(e.target===m)closeLeadModal()};m.querySelectorAll('[data-lead-close]').forEach(b=>b.onclick=closeLeadModal);return m}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('lead-modal').classList.contains('hidden'))closeLeadModal()});
+// Lock page scroll while the lead modal or a document preview is open; restore the scroll position on close.
+let scrollLockY=null;
+function syncScrollLock(){const on=!$('lead-modal').classList.contains('hidden')||!!document.querySelector('.job-doc-preview-backdrop');if(on===(scrollLockY!==null))return;const root=document.documentElement,b=document.body;if(on){scrollLockY=window.scrollY;b.style.top=-scrollLockY+'px';root.classList.add('scroll-locked')}else{const y=scrollLockY;scrollLockY=null;root.classList.remove('scroll-locked');b.style.top='';window.scrollTo({top:y,behavior:'instant'})}}
+new MutationObserver(syncScrollLock).observe($('lead-modal'),{attributes:true,attributeFilter:['class']});new MutationObserver(syncScrollLock).observe(document.body,{childList:true});
 function openLeadDetails(id){const l=leads.find(x=>x.id===id);if(!l)return;const e=l.evaluation||{},s=e.scores||{};const list=(title,items,cls)=>items&&items.length?'<h4>'+title+'</h4><ul'+(cls?' class="'+cls+'"':'')+'>'+items.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul>':'';
  const m=openLeadModal('<div class="lead-dialog-head">'+leadIdentity(l)+'<button class="lead-close" data-lead-close aria-label="Close">'+ICON('close')+'</button></div><div class="lead-dialog-body">'+(l.url?'<p class="tailor-note" id="lead-open-status">'+escapeHtml(statusLine(null))+'</p>':'')+(e.role_summary?'<p>'+escapeHtml(e.role_summary)+'</p>':'')+
   '<div class="lead-grid"><div><b>Location</b>'+escapeHtml(l.location||'Not listed')+(e.location_note?'<small>'+escapeHtml(e.location_note)+'</small>':'')+'</div><div><b>Pay</b>'+escapeHtml(leadPay(l))+(e.compensation?.note?'<small>'+escapeHtml(e.compensation.note)+'</small>':'')+'</div><div><b>Posted</b>'+escapeHtml(leadPosted(l).replace(/^Posted /,''))+'</div><div><b>Match</b>'+escapeHtml(e.match_type?e.match_type[0].toUpperCase()+e.match_type.slice(1):'—')+'</div></div>'+
